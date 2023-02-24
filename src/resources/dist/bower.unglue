@@ -4,7 +4,7 @@
         "../vendorlibs/ng-colorwheel/ng-colorwheel.js",
         "../../../vendor/bower-asset/angular-loading-bar/build/loading-bar.min.js",
         "../vendorlibs/angularjs-datepicker/angular-datepicker.js",
-        "../../../vendor/bower-asset/ui-router/release/angular-ui-router.js",
+        "../../../vendor/bower-asset/angular-ui-router/release/angular-ui-router.js",
         "../../../vendor/bower-asset/ng-file-upload/ng-file-upload-shim.min.js",
         "../../../vendor/bower-asset/ng-file-upload/ng-file-upload.min.js",
         "../../../vendor/bower-asset/ng-flow/dist/ng-flow-standalone.min.js",

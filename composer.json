@@ -42,7 +42,7 @@
         "twbs/bootstrap": "^4.5",
         "bower-asset/angular": "^1.8.2",
         "bower-asset/angular-loading-bar": "^0.9.0",
-        "bower-asset/ui-router": "^0.4.0",
+        "bower-asset/angular-ui-router": "^1.0.30",
         "bower-asset/ng-file-upload": "^12.2.0",
         "bower-asset/ng-flow": "^2.7.0",
         "bower-asset/ng-wig": "^3.0.0",
