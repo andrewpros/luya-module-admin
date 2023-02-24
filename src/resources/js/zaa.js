@@ -47,79 +47,77 @@ function typeCastValue(value) {
 /* DEFINE LUYA ADMIN ANGULAR VAR */
 
 var zaa = angular.module("zaa", ["ui.router", "dnd", "angular-loading-bar", "ngFileUpload", "ngWig", "flow", "angular.filter", "720kb.datepicker", "directive.ngColorwheel", "uiCropper"]);
-    
+
 /* CONFIG */
 
-zaa.config(['$httpProvider', '$stateProvider', '$controllerProvider', '$urlMatcherFactoryProvider', function($httpProvider, $stateProvider, $controllerProvider, $urlMatcherFactoryProvider) {
-    	
-        $httpProvider.interceptors.push("authInterceptor");
+zaa.config(['$httpProvider', '$stateProvider', '$controllerProvider', '$urlMatcherFactoryProvider', function ($httpProvider, $stateProvider, $controllerProvider, $urlMatcherFactoryProvider) {
 
-        // used to bootstrap the angularjs controllers in the view 
-        zaa.bootstrap = $controllerProvider;
+    $httpProvider.interceptors.push("authInterceptor");
 
-        $urlMatcherFactoryProvider.strictMode(false)
+    // used to bootstrap the angularjs controllers in the view 
+    zaa.bootstrap = $controllerProvider;
 
-        /**
-         * resolvers: https://github.com/angular-ui/ui-router/wiki#resolve
-         */
-        $stateProvider
-            .state("default", {
-                url: "/default/:moduleId",
-                templateUrl: function ($stateParams) {
-                    return "admin/template/default";
-                }
-            })
-            .state("default.route", {
-                url: "/:moduleRouteId/:controllerId/:actionId",
-                templateUrl: function ($stateParams) {
-                    return $stateParams.moduleRouteId + "/" + $stateParams.controllerId + "/" + $stateParams.actionId;
-                },
-                parent: 'default',
-                resolve: {
-                    adminServiceResolver: adminServiceResolver
-                }
-            })
-            .state("custom", {
-                url: "/template/:templateId",
-                templateUrl: function ($stateParams) {
-                    return $stateParams.templateId;
-                },
-                resolve: {
-                    adminServiceResolver: adminServiceResolver,
-                    resolverProvider: ['resolver', function (resolver) {
-                        return resolver.then;
-                    }]
-                }
-            })
-            .state("home", {
-                url: "",
-                templateUrl: "admin/default/dashboard",
-                controller: ['$scope', function($scope) {
-                    $scope.$parent.currentItem = {'icon':'home', 'alias': i18n['menu_dashboard']};
+    $urlMatcherFactoryProvider.strictMode(false)
+
+    /**
+     * resolvers: https://github.com/angular-ui/ui-router/wiki#resolve
+     */
+    $stateProvider
+        .state("default", {
+            url: "/default/:moduleId",
+            templateUrl: function ($stateParams) {
+                return "admin/template/default";
+            }
+        })
+        .state("default.route", {
+            url: "/:moduleRouteId/:controllerId/:actionId",
+            templateUrl: function ($stateParams) {
+                return $stateParams.moduleRouteId + "/" + $stateParams.controllerId + "/" + $stateParams.actionId;
+            },
+            resolve: {
+                adminServiceResolver: adminServiceResolver
+            }
+        })
+        .state("custom", {
+            url: "/template/:templateId",
+            templateUrl: function ($stateParams) {
+                return $stateParams.templateId;
+            },
+            resolve: {
+                adminServiceResolver: adminServiceResolver,
+                resolverProvider: ['resolver', function (resolver) {
+                    return resolver.then;
                 }]
-            })
-            // ngrest crud detail view
-            .state("default.route.detail", {
-				url: "/:id",
-				parent: 'default.route',
-				template: '<ui-view/>',
-				controller: ['$scope', '$stateParams', function($scope, $stateParams) {
-	
-					$scope.crud = $scope.$parent;
-	
-					$scope.init = function() {
-						if (!$scope.crud.config.inline) {
-							if ($scope.crud.data.updateId != $stateParams.id) {
-								$scope.crud.toggleUpdate($stateParams.id);
-							}
-						}
-					}
-	
-					$scope.init();
-				}]
-            });
-    }]);
-    
+            }
+        })
+        .state("home", {
+            url: "",
+            templateUrl: "admin/default/dashboard",
+            controller: ['$scope', function ($scope) {
+                $scope.$parent.currentItem = { 'icon': 'home', 'alias': i18n['menu_dashboard'] };
+            }]
+        })
+        // ngrest crud detail view
+        .state("default.route.detail", {
+            url: "/:id",
+            template: '<ui-view/>',
+            controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
+
+                $scope.crud = $scope.$parent;
+
+                $scope.init = function () {
+                    if (!$scope.crud.config.inline) {
+                        if ($scope.crud.data.updateId != $stateParams.id) {
+                            $scope.crud.toggleUpdate($stateParams.id);
+                        }
+                    }
+                }
+
+                $scope.init();
+            }]
+        });
+}]);
+
 /* PROVIDERS */
 
 /**
@@ -142,7 +140,7 @@ zaa.config(['$httpProvider', '$stateProvider', '$controllerProvider', '$urlMatch
  * 
  * @see https://github.com/angular-ui/ui-router/wiki#resolve
  */
-zaa.provider("resolver", [function() {
+zaa.provider("resolver", [function () {
     var list = [];
 
     this.addCallback = function (callback) {
@@ -150,13 +148,13 @@ zaa.provider("resolver", [function() {
     };
 
     this.$get = ['$injector', '$q', '$state', function ($injector, $q, $state) {
-        return $q(function(resolve, reject) {
+        return $q(function (resolve, reject) {
             for (var i in list) {
                 $injector.invoke(list[i]);
             }
         })
     }];
-    
+
 }]);
 
 /* FACTORIES */
@@ -176,7 +174,7 @@ zaa.provider("resolver", [function() {
  * LuyaLoading.stop();
  * ```
  */
-zaa.factory("LuyaLoading", ['$timeout', function($timeout) {
+zaa.factory("LuyaLoading", ['$timeout', function ($timeout) {
 
     var state = false;
     var stateMessage = null;
@@ -241,56 +239,56 @@ zaa.factory("AdminClassService", function () {
         }
     };
 
-    service.hasClassSpace = function(spaceName) {
-    	 if (service.vars.hasOwnProperty(spaceName)) {
-    		 return true;
-    	 }
-    	 
-    	 return false;
+    service.hasClassSpace = function (spaceName) {
+        if (service.vars.hasOwnProperty(spaceName)) {
+            return true;
+        }
+
+        return false;
     };
-    
+
     service.setClassSpace = function (spaceName, className) {
         service.vars[spaceName] = className;
     };
-    
-    service.clearSpace = function(spaceName) {
-    	if (service.vars.hasOwnProperty(spaceName)) {
-    		service.vars[spaceName] = null;
-    	}
+
+    service.clearSpace = function (spaceName) {
+        if (service.vars.hasOwnProperty(spaceName)) {
+            service.vars[spaceName] = null;
+        }
     };
-    
-    service.removeSpace = function(spaceName) {
-    	if (service.hasClassSpace(spaceName)) {
-    		delete service.vars[spaceName];
-    	}
+
+    service.removeSpace = function (spaceName) {
+        if (service.hasClassSpace(spaceName)) {
+            delete service.vars[spaceName];
+        }
     };
 
     service.stack = 0;
-    
-    service.modalStackPush = function() {
-    	service.stack += 1;
+
+    service.modalStackPush = function () {
+        service.stack += 1;
     };
-    
-    service.modalStackRemove = function() {
-    	if (service.stack <= 1) {
-    		service.stack = 0; 
-    	} else {
-    		service.stack -= 1;
-    	}
+
+    service.modalStackRemove = function () {
+        if (service.stack <= 1) {
+            service.stack = 0;
+        } else {
+            service.stack -= 1;
+        }
     };
-    
-    service.modalStackRemoveAll = function() {
-    	service.stack = 0;
+
+    service.modalStackRemoveAll = function () {
+        service.stack = 0;
     };
-    
-    service.modalStackIsEmpty = function() {
-    	if (service.stack == 0) {
-    		return true;
-    	}
-    	
-    	return false;
+
+    service.modalStackIsEmpty = function () {
+        if (service.stack == 0) {
+            return true;
+        }
+
+        return false;
     };
-    
+
     return service;
 });
 
@@ -310,7 +308,7 @@ zaa.factory('CacheReloadService', ['$http', '$window', function ($http, $window)
             $window.location.reload();
         });
     }
-    
+
     return service;
 }]);
 
@@ -324,16 +322,16 @@ zaa.factory('CacheReloadService', ['$http', '$window', function ($http, $window)
 zaa.factory("authInterceptor", ['$rootScope', '$q', 'AdminToastService', 'AdminDebugBar', function ($rootScope, $q, AdminToastService, AdminDebugBar) {
     return {
         request: function (config) {
-        	if (!config.hasOwnProperty('ignoreLoadingBar')) {
-        		config.debugId = AdminDebugBar.pushRequest(config);
-        	}
-        	
-        	if (config.hasOwnProperty('authToken')) {
-        		var authToken = config.authToken;
-        	} else {
-        		var authToken = $rootScope.luyacfg.authToken;
-        	}
-        	
+            if (!config.hasOwnProperty('ignoreLoadingBar')) {
+                config.debugId = AdminDebugBar.pushRequest(config);
+            }
+
+            if (config.hasOwnProperty('authToken')) {
+                var authToken = config.authToken;
+            } else {
+                var authToken = $rootScope.luyacfg.authToken;
+            }
+
             config.headers = config.headers || {};
             config.headers.Authorization = "Bearer " + authToken;
 
@@ -342,38 +340,38 @@ zaa.factory("authInterceptor", ['$rootScope', '$q', 'AdminToastService', 'AdminD
             if (csrfObject !== null) {
                 config.headers['X-CSRF-Token'] = csrfObject.content;
             }
-            
+
             return config || $q.when(config);
         },
-        response: function(config) {
-        	if (!config.hasOwnProperty('ignoreLoadingBar')) {
-        		AdminDebugBar.pushResponse(config);
-        	}
-        	
-        	return config || $q.when(config);
+        response: function (config) {
+            if (!config.hasOwnProperty('ignoreLoadingBar')) {
+                AdminDebugBar.pushResponse(config);
+            }
+
+            return config || $q.when(config);
         },
         responseError: function (data) {
-            if (data.status == 401 || data.status == 403 || data.status == 405) {
-            	if (!data.config.hasOwnProperty('authToken')) {
-            		window.location = "admin/default/logout?autologout=1";
+            if (data.status == 401 || data.status == 403 || data.status == 405) {
+                if (!data.config.hasOwnProperty('authToken')) {
+                    window.location = "admin/default/logout?autologout=1";
                 }
             } else if (data.status == 404) {
                 var message = data.data.hasOwnProperty('message');
-            	if (message) {
-            		AdminToastService.info(data.data.message, 10000);
-            	} else {
-            		AdminToastService.info("Response Error: " + data.status + " " + data.statusText, 10000);
-            	}
+                if (message) {
+                    AdminToastService.info(data.data.message, 10000);
+                } else {
+                    AdminToastService.info("Response Error: " + data.status + " " + data.statusText, 10000);
+                }
             } else if (data.status != 422) {
-            	var message = data.data.hasOwnProperty('message');
-            	if (message) {
-            		AdminToastService.error(data.data.message, 10000);
-            	} else {
-            		AdminToastService.error("Response Error: " + data.status + " " + data.statusText, 10000);
-            	}
-                
+                var message = data.data.hasOwnProperty('message');
+                if (message) {
+                    AdminToastService.error(data.data.message, 10000);
+                } else {
+                    AdminToastService.error("Response Error: " + data.status + " " + data.statusText, 10000);
+                }
+
             }
-            
+
             return $q.reject(data);
         }
     };
