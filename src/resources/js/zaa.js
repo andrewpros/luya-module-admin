@@ -152,6 +152,7 @@ zaa.provider("resolver", [function () {
             for (var i in list) {
                 $injector.invoke(list[i]);
             }
+            resolve("ok");
         })
     }];
 
